@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Still Alert</string>
+    <string name="button_start">Start</string>
+    <string name="textview_time">Time</string>
 </resources>

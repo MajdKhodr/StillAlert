@@ -6,4 +6,40 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton_start"
+        android:layout_width="294dp"
+        android:layout_height="322dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:clickable="true"
+        app:backgroundTint="#49d00a"
+        app:elevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="184dp" />
+
+    <TextView
+        android:id="@+id/button_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_start"
+        android:textColor="@android:color/background_dark"
+        android:textSize="100sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/floatingActionButton_start"
+        app:layout_constraintEnd_toEndOf="@+id/floatingActionButton_start"
+        app:layout_constraintStart_toStartOf="@+id/floatingActionButton_start"
+        app:layout_constraintTop_toTopOf="@+id/floatingActionButton_start" />
+
+    <TextView
+        android:id="@+id/textview_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:hint="30 Seconds"
+        android:text="@string/textview_time"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/floatingActionButton_start"
+        tools:layout_editor_absoluteX="177dp" />
 </android.support.constraint.ConstraintLayout>
