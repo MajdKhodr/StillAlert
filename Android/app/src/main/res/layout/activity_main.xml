@@ -16,7 +16,6 @@
         android:layout_marginBottom="8dp"
         android:clickable="true"
         android:focusable="true"
-        android:onClick="stopActivity"
         app:backgroundTint="#49d00a"
         app:elevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -70,7 +69,7 @@
         app:srcCompat="@drawable/baseline_timer_white_48" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imageview_setting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
