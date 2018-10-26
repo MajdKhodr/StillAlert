@@ -31,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/button_stop"
-        android:textColor="@android:color/background_dark"
+        android:textColor="@color/light"
         android:textSize="70sp"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/floatingActionButton_stop"
