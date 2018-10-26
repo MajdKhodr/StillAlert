@@ -8,8 +8,8 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floatingActionButton_stop"
-        android:layout_width="294dp"
-        android:layout_height="322dp"
+        android:layout_width="268dp"
+        android:layout_height="246dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -23,7 +23,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.78"
+        app:layout_constraintVertical_bias="0.573"
         tools:onClick="mainActivity" />
 
     <TextView
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:text="@string/button_stop"
         android:textColor="@android:color/background_dark"
-        android:textSize="100sp"
+        android:textSize="70sp"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/floatingActionButton_stop"
         app:layout_constraintEnd_toEndOf="@+id/floatingActionButton_stop"
@@ -43,14 +43,17 @@
         android:id="@+id/textview_time"
         android:layout_width="155dp"
         android:layout_height="65dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="56dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:text="@string/textview_time"
         android:textAlignment="textStart"
         android:textSize="50sp"
         app:layout_constraintBottom_toTopOf="@+id/floatingActionButton_stop"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/time_icon"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
