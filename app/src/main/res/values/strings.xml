@@ -6,6 +6,9 @@
     <string name="textView_vibration">Vibration</string>
     <string name="textView_sound">Sound</string>
     <string name="textView_idletime">Idle Time</string>
-    <string name="textView_threshhold">Threshold</string>
+    <string name="textView_threshhold">Sensitivity</string>
     <string name="textView_time">30s</string>
+    <string name="time_editText">seconds</string>
+    <string name="save_button">Save</string>
+
 </resources>

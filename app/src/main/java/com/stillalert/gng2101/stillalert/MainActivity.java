@@ -22,14 +22,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private FloatingActionButton mButton;
     private TextView mTextView;
+    private TextView mDisplayTime;
     private ImageView mSetting;
     private Sensor mSensor;
     private SensorManager mSensorManager;
     private float tempX, tempY, tempZ;
     private String flag;
     private int counter;
-    private Long time;
-
+    private int time = 0;
 
     private static final String TAG = "MainActivity";
 
@@ -40,14 +40,23 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         flag = "OFF";
 
-        time = System.currentTimeMillis() / 1000;
-
         mTextView = findViewById(R.id.button_start);
 
         mSetting = findViewById(R.id.imageview_setting);
 
         mButton = findViewById(R.id.floatingActionButton_start);
 
+        mDisplayTime = findViewById(R.id.textview_time);
+
+        Log.d(TAG, "value is " + getIntent().getSerializableExtra("Time"));
+
+        if (getIntent().getSerializableExtra("Time") != null) {
+            time = (int) getIntent().getSerializableExtra("Time");
+        }
+
+        Log.d(TAG, "MainActivity Time = " + time);
+
+        mDisplayTime.setText(Integer.toString(time));
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
@@ -112,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 Log.d(TAG, "onSensorChanged: " + System.currentTimeMillis()/1000);
                 if((System.currentTimeMillis()/1000) - time > 1){
                     playSound();
-                    time = System.currentTimeMillis()/1000;
+                    //time = System.currentTimeMillis()/1000;
                 }
             }
 
