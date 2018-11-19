@@ -1,8 +1,8 @@
 package com.stillalert.gng2101.stillalert;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -27,6 +27,11 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String vibrate = preferences.getString("vibrate", "true");
+        String sound = preferences.getString("sound","true");
+        int idleTime = preferences.getInt("idleTime", 30);
 
         mSoundSwitch = findViewById(R.id.switch_sound);
         mSoundSwitch = findViewById(R.id.switch_vibration);
@@ -54,6 +59,8 @@ public class SettingsActivity extends AppCompatActivity {
     public void save(View view) {
         sound = mSoundSwitch.isChecked();
         vibrate = mVibrationSwitch.isChecked();
+
+
 
 
         Intent intent = new Intent(this, MainActivity.class);
