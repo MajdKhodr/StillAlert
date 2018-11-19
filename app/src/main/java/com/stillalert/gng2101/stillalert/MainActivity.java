@@ -18,7 +18,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements SensorEventListener {
+public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton mButton;
     private TextView mTextView;
@@ -96,45 +96,5 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void settingsActivity(View view) {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
-    }
-
-    @Override
-    public void onSensorChanged(final SensorEvent sensorEvent) {
-        if (flag.equals("OFF")) {
-            return;
-        }
-        tempX = 0;
-        tempY = 0;
-        tempZ = 0;
-
-        if (Math.abs(tempX - sensorEvent.values[0]) > 0.1 || tempY - sensorEvent.values[1] > 0.1 || tempZ - sensorEvent.values[2] > 0.1) {
-            Log.d(TAG, "onSensorChange X: " + sensorEvent.values[0] + " Y:" + sensorEvent.values[1] + " Z:" + sensorEvent.values[2]);
-            counter = 0;
-        } else {
-            tempX = sensorEvent.values[0];
-            tempY = sensorEvent.values[1];
-            tempZ = sensorEvent.values[2];
-            counter++;
-            if (counter > 10) {
-                Log.d(TAG, "onSensorChanged: counter");
-                Log.d(TAG, "onSensorChanged: " + time);
-                Log.d(TAG, "onSensorChanged: " + System.currentTimeMillis()/1000);
-                if((System.currentTimeMillis()/1000) - time > 1){
-                    playSound();
-                    //time = System.currentTimeMillis()/1000;
-                }
-            }
-
-        }
-    }
-
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int i) {
-    }
-
-    private void playSound() {
-        final MediaPlayer mp = MediaPlayer.create(this, R.raw.sound);
-        mp.start();
     }
 }
