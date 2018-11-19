@@ -18,7 +18,7 @@ public class SettingsActivity extends AppCompatActivity {
     public EditText mIdleTime;
     public boolean vibrate;
     public boolean sound;
-    public String time;
+    public String idleTime;
 
     private static final String TAG = "SettingsActivity";
 
@@ -28,50 +28,35 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String vibrate = preferences.getString("vibrate", "true");
-        String sound = preferences.getString("sound","true");
-        int idleTime = preferences.getInt("idleTime", 30);
-
         mSoundSwitch = findViewById(R.id.switch_sound);
-        mSoundSwitch = findViewById(R.id.switch_vibration);
+        mVibrationSwitch = findViewById(R.id.switch_vibration);
         mIdleTime = findViewById(R.id.time_editText);
 
-        mIdleTime.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String soundKey = preferences.getString("sound","true");
+        String vibrateKey = preferences.getString("vibrate", "true");
+        int idleTimeKey = preferences.getInt("idleTime", 30);
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                time = s.toString();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
+        mSoundSwitch.setChecked(Boolean.parseBoolean(soundKey));
+        mVibrationSwitch.setChecked(Boolean.parseBoolean(vibrateKey));
+        mIdleTime.setText(Integer.toString(idleTimeKey));
     }
 
 
     public void save(View view) {
         sound = mSoundSwitch.isChecked();
         vibrate = mVibrationSwitch.isChecked();
+        idleTime = mIdleTime.getText().toString();
 
-
-
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("sound", String.valueOf(sound));
+        editor.putString("vibrate", String.valueOf(vibrate));
+        editor.putInt("idleTime", Integer.parseInt(idleTime));
+        editor.apply();
 
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("Sound", time);
-        intent.putExtra("Vibrate", time);
-        intent.putExtra("Time", time);
-
         startActivity(intent);
-
-        Log.d(TAG, "Settings activity Time = " + time);
     }
-
 
 }
