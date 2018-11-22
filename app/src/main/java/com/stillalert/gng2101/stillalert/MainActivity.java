@@ -50,13 +50,13 @@ public class MainActivity extends AppCompatActivity {
                 if (view instanceof FloatingActionButton) {
                     if ((mTextView.getText().toString()).equals("Start")) {
                         view.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff0000")));
-                        mTextView.setText("Stop");
+                        mTextView.setText(R.string.stop);
                         mSetting.setVisibility(View.INVISIBLE);
                         tracking.startTracking();
 
                     } else {
                         view.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#008000")));
-                        mTextView.setText("Start");
+                        mTextView.setText(R.string.start);
                         mSetting.setVisibility(View.VISIBLE);
                         tracking.stopTracking();
                     }

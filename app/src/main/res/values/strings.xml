@@ -10,5 +10,9 @@
     <string name="textView_time">30s</string>
     <string name="time_editText">seconds</string>
     <string name="save_button">Save</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="startTimer">Start Timer</string>
+    <string name="settingsPage">Settings Page</string>
 
 </resources>

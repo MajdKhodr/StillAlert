@@ -80,7 +80,10 @@ public class Tracking extends AppCompatActivity implements SensorEventListener {
 
             // If has been stopped for more than idle time play sound
             if(System.currentTimeMillis() - timestamp > idleTime  && stopped){
-                playSound();
+                Log.d(TAG, "onSensorChanged: RING RING");
+                if(soundEnabled){
+                    playSound();
+                }
                 stopped = false;
             }
 
