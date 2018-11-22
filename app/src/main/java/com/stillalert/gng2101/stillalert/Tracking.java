@@ -46,7 +46,7 @@ public class Tracking extends AppCompatActivity implements SensorEventListener {
         vibrationEnabled = Boolean.parseBoolean(preferences.getString("vibrate", "true"));
         idleTime = preferences.getInt("idleTime", 30);
         idleTime *= 1000;
-        sensitivity = preferences.getFloat("sensitivity", 0.3f);
+        sensitivity  = preferences.getFloat("sensitivity", 0.3f);
 
         // Load calibration settings
         calibrateX = preferences.getFloat("calibrateX",0);
@@ -70,8 +70,8 @@ public class Tracking extends AppCompatActivity implements SensorEventListener {
             return;
         }
 
-        if(Math.abs(tempX - sensorEvent.values[0]) - calibrateX < 0.5 && Math.abs(tempY - sensorEvent.values[1]) - calibrateY < 0.5
-                && Math.abs(tempZ - sensorEvent.values[2]) - calibrateZ < 0.5 ){
+        if(Math.abs(tempX - sensorEvent.values[0]) - calibrateX < sensitivity && Math.abs(tempY - sensorEvent.values[1]) - calibrateY < sensitivity
+                && Math.abs(tempZ - sensorEvent.values[2]) - calibrateZ < sensitivity ){
             Log.d("Sensor", "Still " + tempX);
 
             // If first stopped indication store time and set stopped to true
