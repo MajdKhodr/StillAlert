@@ -29,15 +29,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Load UI elements
         mTextView = findViewById(R.id.button_start);
         mSetting = findViewById(R.id.imageview_setting);
         mButton = findViewById(R.id.floatingActionButton_start);
         mDisplayTime = findViewById(R.id.textview_time);
 
+        // Load idle time
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         int idleTimeKey = preferences.getInt("idleTime", 30);
-
         mDisplayTime.setText(Integer.toString(idleTimeKey));
+
+        // Setup tracker
         context = this;
         tracking = new Tracking(context);
 

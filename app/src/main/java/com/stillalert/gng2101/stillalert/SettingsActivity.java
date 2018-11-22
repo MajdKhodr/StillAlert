@@ -80,16 +80,19 @@ public class SettingsActivity extends AppCompatActivity {
 
 
     public void save(View view) {
+
+        // Get UI state
         sound = mSoundSwitch.isChecked();
         vibrate = mVibrationSwitch.isChecked();
         idleTime = mIdleTime.getText().toString();
 
+
+        // Save settings
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("sound", String.valueOf(sound));
         editor.putString("vibrate", String.valueOf(vibrate));
         editor.putInt("idleTime", Integer.parseInt(idleTime));
-
         editor.putFloat("calibrateX", calibrateX);
         editor.putFloat("calibrateY", calibrateY);
         editor.putFloat("calibrateZ", calibrateZ);
