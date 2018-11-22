@@ -23,6 +23,7 @@ public class Tracking extends AppCompatActivity implements SensorEventListener {
     private boolean soundEnabled;
     private boolean vibrationEnabled;
     private int idleTime;
+    private float sensitivity;
     private boolean flag;
     float tempX, tempY, tempZ;
     long timestamp;
@@ -45,6 +46,7 @@ public class Tracking extends AppCompatActivity implements SensorEventListener {
         vibrationEnabled = Boolean.parseBoolean(preferences.getString("vibrate", "true"));
         idleTime = preferences.getInt("idleTime", 30);
         idleTime *= 1000;
+        sensitivity = preferences.getFloat("sensitivity", 0.3f);
 
         // Load calibration settings
         calibrateX = preferences.getFloat("calibrateX",0);

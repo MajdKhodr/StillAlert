@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -20,13 +21,18 @@ public class SettingsActivity extends AppCompatActivity {
     private Switch mSoundSwitch;
     private Switch mVibrationSwitch;
     private EditText mIdleTime;
+    private SeekBar mSeekBar;
     private boolean vibrate;
     private boolean sound;
     private String idleTime;
+    private int seekBarIndex;
+    private double sensitivity;
     private Button mCalibrate;
     private float calibrateX, calibrateY, calibrateZ;
     private Context context;
     private Tracking tracking;
+
+    private final double[] listOfThresholds = {0.3, 0.25, 0.2, 0.15, 0.1};
 
 
     private static final String TAG = "SettingsActivity";
@@ -41,6 +47,8 @@ public class SettingsActivity extends AppCompatActivity {
         mSoundSwitch = findViewById(R.id.switch_sound);
         mVibrationSwitch = findViewById(R.id.switch_vibration);
         mIdleTime = findViewById(R.id.time_editText);
+        mSeekBar = findViewById(R.id.seekBar_threshhold);
+        mSeekBar.setMax(4);
         mCalibrate = findViewById(R.id.calibrate);
 
         // Load settings
@@ -48,11 +56,13 @@ public class SettingsActivity extends AppCompatActivity {
         String soundKey = preferences.getString("sound", "true");
         String vibrateKey = preferences.getString("vibrate", "true");
         int idleTimeKey = preferences.getInt("idleTime", 30);
+        int seekBarIndexKey = preferences.getInt("seekBarIndex", 0);
 
         // Set settings
         mSoundSwitch.setChecked(Boolean.parseBoolean(soundKey));
         mVibrationSwitch.setChecked(Boolean.parseBoolean(vibrateKey));
         mIdleTime.setText(Integer.toString(idleTimeKey));
+        mSeekBar.setProgress(seekBarIndexKey);
 
         // Save context
         context = this;
@@ -94,7 +104,8 @@ public class SettingsActivity extends AppCompatActivity {
         sound = mSoundSwitch.isChecked();
         vibrate = mVibrationSwitch.isChecked();
         idleTime = mIdleTime.getText().toString();
-
+        seekBarIndex = mSeekBar.getProgress();
+        sensitivity = listOfThresholds[mSeekBar.getProgress()];
 
         // Save settings
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -102,6 +113,8 @@ public class SettingsActivity extends AppCompatActivity {
         editor.putString("sound", String.valueOf(sound));
         editor.putString("vibrate", String.valueOf(vibrate));
         editor.putInt("idleTime", Integer.parseInt(idleTime));
+        editor.putInt("seekBarIndex", seekBarIndex);
+        editor.putFloat("sensitivity", (float)sensitivity);
         editor.putFloat("calibrateX", calibrateX);
         editor.putFloat("calibrateY", calibrateY);
         editor.putFloat("calibrateZ", calibrateZ);
