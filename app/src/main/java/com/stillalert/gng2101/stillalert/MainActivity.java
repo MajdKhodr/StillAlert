@@ -70,9 +70,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-
-
-
     }
 
     public void settingsActivity(View view) {

@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.Toast;
 
 public class SettingsActivity extends AppCompatActivity {
     private Switch mSoundSwitch;
@@ -60,14 +61,26 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 tracking = new Tracking(context);
-                tracking.startTracking();
 
+                Toast.makeText(context, "Will start calibration in 2 seconds, place phone on table", Toast.LENGTH_SHORT).show();
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     public void run() {
+                        tracking.startTracking();
+                    }
+                }, 2000);
+
+
+                handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        Toast.makeText(context, "Calibrating...", Toast.LENGTH_SHORT).show();
                         tracking.stopTracking();
                     }
                 }, 2000);
+
+
+
 
 
 
