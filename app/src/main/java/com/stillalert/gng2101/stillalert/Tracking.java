@@ -12,6 +12,8 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import java.sql.Timestamp;
+
 public class Tracking extends AppCompatActivity implements SensorEventListener {
 
     private Sensor mSensor;
@@ -23,6 +25,8 @@ public class Tracking extends AppCompatActivity implements SensorEventListener {
     private int idleTime;
     private boolean flag;
     float tempX, tempY, tempZ;
+    long timestamp;
+    private boolean stopped;
 
 
     private static final String TAG = "Tracking";
@@ -40,14 +44,21 @@ public class Tracking extends AppCompatActivity implements SensorEventListener {
         soundEnabled = Boolean.parseBoolean(preferences.getString("sound", "true"));
         vibrationEnabled = Boolean.parseBoolean(preferences.getString("vibrate", "true"));
         idleTime = preferences.getInt("idleTime", 30);
+        idleTime *= 1000;
 
         // Load calibration settings
         calibrateX = preferences.getFloat("calibrateX",0);
         calibrateY = preferences.getFloat("calibrateY",0);
         calibrateZ = preferences.getFloat("calibrateZ",0);
 
+        tempX = 0;
+        tempY = 0;
+        tempZ = 0;
+
         //Start off
         flag = false;
+        stopped = false;
+        timestamp = 0;
 
     }
 
@@ -57,11 +68,41 @@ public class Tracking extends AppCompatActivity implements SensorEventListener {
             return;
         }
 
+        if(Math.abs(tempX - sensorEvent.values[0]) - calibrateX < 0.5 && Math.abs(tempY - sensorEvent.values[1]) - calibrateY < 0.5
+                && Math.abs(tempZ - sensorEvent.values[2]) - calibrateZ < 0.5 ){
+            Log.d("Sensor", "Still " + tempX);
+
+            // If first stopped indication store time and set stopped to true
+            if(!stopped){
+                timestamp = System.currentTimeMillis();
+                stopped = true;
+            }
+
+            // If has been stopped for more than idle time play sound
+            if(System.currentTimeMillis() - timestamp > idleTime  && stopped){
+                playSound();
+                stopped = false;
+            }
+
+
+        }else{
+            // Movement detected reset everything
+            Log.d("Sensor", "Moving " + tempX);
+            stopped = false;
+            timestamp = 0;
+
+        }
+
+
+
+
+
+        // For calibration
         tempX = sensorEvent.values[0];
         tempY = sensorEvent.values[1];
         tempZ = sensorEvent.values[2];
 
-        Log.d(TAG, "onSensorChanged: X: " +tempX + " Y: " + tempY + "Z:" + tempZ);
+
 
     }
 
