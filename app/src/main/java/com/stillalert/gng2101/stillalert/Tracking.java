@@ -16,59 +16,53 @@ public class Tracking extends AppCompatActivity implements SensorEventListener {
 
     private Sensor mSensor;
     private SensorManager mSensorManager;
-    private float tempX, tempY, tempZ;
-    private String flag;
-    private int counter = 0;
+    private float calibrateX, calibrateY, calibrateZ;
     private Context nContext;
     private boolean soundEnabled;
     private boolean vibrationEnabled;
     private int idleTime;
+    private boolean flag;
+    float tempX, tempY, tempZ;
 
 
     private static final String TAG = "Tracking";
 
     public Tracking(Context context) {
+
+        // Setup sensors
         nContext = context;
         mSensorManager = (SensorManager) nContext.getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         mSensorManager.registerListener(Tracking.this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
+        // Load settings
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         soundEnabled = Boolean.parseBoolean(preferences.getString("sound", "true"));
         vibrationEnabled = Boolean.parseBoolean(preferences.getString("vibrate", "true"));
         idleTime = preferences.getInt("idleTime", 30);
-        flag = "OFF";
+
+        // Load calibration settings
+        calibrateX = preferences.getFloat("calibrateX",0);
+        calibrateY = preferences.getFloat("calibrateY",0);
+        calibrateZ = preferences.getFloat("calibrateZ",0);
+
+        //Start off
+        flag = false;
+
     }
 
     @Override
     public void onSensorChanged(final SensorEvent sensorEvent) {
-        if (flag.equals("OFF")) {
+        if(!flag){
             return;
         }
-        tempX = 0;
-        tempY = 0;
-        tempZ = 0;
 
-        if (((Math.abs(tempX - sensorEvent.values[0])) < 0.1) || (Math.abs((tempY - sensorEvent.values[1])) < 0.1) || (Math.abs((tempZ - sensorEvent.values[2])) < 0.1)) {
-            Log.d(TAG, "onSensorChange X: " + sensorEvent.values[0] + " Y:" + sensorEvent.values[1] + " Z:" + sensorEvent.values[2]);
-            counter++;
-        } else {
-            counter = 0;
-        }
         tempX = sensorEvent.values[0];
         tempY = sensorEvent.values[1];
         tempZ = sensorEvent.values[2];
-        counter++;
-        if (counter > 10) {
-            if ((Math.abs(tempX - sensorEvent.values[0]) < 0.1) || (Math.abs((tempY - sensorEvent.values[1])) < 0.1) || (Math.abs((tempZ - sensorEvent.values[2])) < 0.1)) {
-                Log.d(TAG, "onSensorChanged: X:" + tempX);
 
-                if ((System.currentTimeMillis() / 1000) - idleTime > 1) {
-                    playSound();
-                    //time = System.currentTimeMillis()/1000;
-                }
-            }
-        }
+        Log.d(TAG, "onSensorChanged: X: " +tempX + " Y: " + tempY + "Z:" + tempZ);
+
     }
 
 
@@ -88,11 +82,22 @@ public class Tracking extends AppCompatActivity implements SensorEventListener {
     }
 
     public void startTracking() {
-        flag = "ON";
+        flag = true;
     }
 
     public void stopTracking() {
-        flag = "OFF";
+        flag = false;
     }
 
+    public float getCalibrateX() {
+        return tempX;
+    }
+
+    public float getCalibrateY() {
+        return tempY;
+    }
+
+    public float getCalibrateZ() {
+        return tempZ;
+    }
 }
