@@ -80,10 +80,6 @@ public class SettingsActivity extends AppCompatActivity {
                 }, 2000);
 
 
-
-
-
-
                 calibrateX = tracking.getCalibrateX();
                 calibrateY = tracking.getCalibrateY();
                 calibrateZ = tracking.getCalibrateZ();
