@@ -132,6 +132,8 @@ public class Tracking extends AppCompatActivity implements SensorEventListener {
 
     public void stopTracking() {
         flag = false;
+        stopped = false;
+        timestamp = 0;
     }
 
     public float getCalibrateX() {
@@ -145,4 +147,5 @@ public class Tracking extends AppCompatActivity implements SensorEventListener {
     public float getCalibrateZ() {
         return tempZ;
     }
+
 }

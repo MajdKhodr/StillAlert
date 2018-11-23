@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
                         tracking.startTracking();
 
                     } else {
-                        view.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#008000")));
+                        view.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#49d00a")));
                         mTextView.setText(R.string.start);
                         mSetting.setVisibility(View.VISIBLE);
                         tracking.stopTracking();
