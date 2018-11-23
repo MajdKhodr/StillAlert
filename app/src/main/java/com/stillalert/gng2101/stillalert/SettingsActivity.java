@@ -32,7 +32,7 @@ public class SettingsActivity extends AppCompatActivity {
     private Context context;
     private Tracking tracking;
 
-    private final double[] listOfThresholds = {0.7, 0.65, 0.6, 0.55, 0.5};
+    private final double[] listOfThresholds = {0.6, 0.55, 0.5, 0.45, 0.4};
 
 
     private static final String TAG = "SettingsActivity";

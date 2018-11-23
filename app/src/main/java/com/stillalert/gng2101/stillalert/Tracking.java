@@ -20,6 +20,7 @@ public class Tracking extends AppCompatActivity implements SensorEventListener {
 
     private Sensor mSensor;
     private SensorManager mSensorManager;
+    private Vibrator vibrator;
     private float calibrateX, calibrateY, calibrateZ;
     private Context nContext;
     private boolean soundEnabled;
@@ -31,7 +32,6 @@ public class Tracking extends AppCompatActivity implements SensorEventListener {
     long timestamp;
     private boolean stopped;
 
-
     private static final String TAG = "Tracking";
 
     public Tracking(Context context) {
@@ -41,6 +41,7 @@ public class Tracking extends AppCompatActivity implements SensorEventListener {
         mSensorManager = (SensorManager) nContext.getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         mSensorManager.registerListener(Tracking.this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 
         // Load settings
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -68,11 +69,11 @@ public class Tracking extends AppCompatActivity implements SensorEventListener {
 
     @Override
     public void onSensorChanged(final SensorEvent sensorEvent) {
-        if(!flag){
+        if (!flag){
             return;
         }
 
-        if(Math.abs(tempX - sensorEvent.values[0]) - calibrateX < sensitivity && Math.abs(tempY - sensorEvent.values[1]) - calibrateY < sensitivity
+        if (Math.abs(tempX - sensorEvent.values[0]) - calibrateX < sensitivity && Math.abs(tempY - sensorEvent.values[1]) - calibrateY < sensitivity
                 && Math.abs(tempZ - sensorEvent.values[2]) - calibrateZ < sensitivity ){
             Log.d("Sensor", "Still " + tempX);
 
@@ -83,13 +84,13 @@ public class Tracking extends AppCompatActivity implements SensorEventListener {
             }
 
             // If has been stopped for more than idle time play sound
-            if(System.currentTimeMillis() - timestamp > idleTime  && stopped){
+            if (System.currentTimeMillis() - timestamp > idleTime  && stopped){
                 Log.d(TAG, "onSensorChanged: RING RING");
-                if(soundEnabled && vibrationEnabled){
+                if (soundEnabled && vibrationEnabled){
                     playSound();
                 }
 
-                if(vibrationEnabled) {
+                if (vibrationEnabled) {
                     vibrate();
                 }
 
@@ -105,17 +106,10 @@ public class Tracking extends AppCompatActivity implements SensorEventListener {
 
         }
 
-
-
-
-
         // For calibration
         tempX = sensorEvent.values[0];
         tempY = sensorEvent.values[1];
         tempZ = sensorEvent.values[2];
-
-
-
     }
 
 
@@ -129,8 +123,7 @@ public class Tracking extends AppCompatActivity implements SensorEventListener {
     }
 
     private void vibrate() {
-        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        vibrator.vibrate(DEFAULT_AMPLITUDE);
+        vibrator.vibrate(1000);
     }
 
     public void startTracking() {
