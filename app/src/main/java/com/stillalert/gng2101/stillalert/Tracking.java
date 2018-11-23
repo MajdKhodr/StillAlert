@@ -14,6 +14,8 @@ import android.util.Log;
 
 import java.sql.Timestamp;
 
+import static android.os.VibrationEffect.DEFAULT_AMPLITUDE;
+
 public class Tracking extends AppCompatActivity implements SensorEventListener {
 
     private Sensor mSensor;
@@ -83,9 +85,14 @@ public class Tracking extends AppCompatActivity implements SensorEventListener {
             // If has been stopped for more than idle time play sound
             if(System.currentTimeMillis() - timestamp > idleTime  && stopped){
                 Log.d(TAG, "onSensorChanged: RING RING");
-                if(soundEnabled){
+                if(soundEnabled && vibrationEnabled){
                     playSound();
                 }
+
+                if(vibrationEnabled) {
+                    vibrate();
+                }
+
                 stopped = false;
             }
 
@@ -123,8 +130,7 @@ public class Tracking extends AppCompatActivity implements SensorEventListener {
 
     private void vibrate() {
         Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-
-        //vibrator.vibrate(DEFAULT_AMPLITUDE);
+        vibrator.vibrate(DEFAULT_AMPLITUDE);
     }
 
     public void startTracking() {
