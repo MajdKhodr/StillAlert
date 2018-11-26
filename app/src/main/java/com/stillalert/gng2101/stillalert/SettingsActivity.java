@@ -32,7 +32,7 @@ public class SettingsActivity extends AppCompatActivity {
     private Context context;
     private Tracking tracking;
 
-    private final double[] listOfThresholds = {0.6, 0.55, 0.5, 0.45, 0.4};
+    private final double[] listOfThresholds = {0.7, 0.65, 0.6, 0.55, 0.5};
 
 
     private static final String TAG = "SettingsActivity";
@@ -72,13 +72,13 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 tracking = new Tracking(context);
 
-                Toast.makeText(context, "Will start calibration in 2 seconds, place phone on table", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Will start calibration in 3 seconds, place phone on table", Toast.LENGTH_SHORT).show();
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     public void run() {
                         tracking.startTracking();
                     }
-                }, 2000);
+                }, 3000);
 
 
                 handler = new Handler();
@@ -89,6 +89,13 @@ public class SettingsActivity extends AppCompatActivity {
                     }
                 }, 2000);
 
+
+                handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        Toast.makeText(context, "Calibration Complete!", Toast.LENGTH_SHORT).show();
+                    }
+                }, 5000);
 
                 calibrateX = tracking.getCalibrateX();
                 calibrateY = tracking.getCalibrateY();
