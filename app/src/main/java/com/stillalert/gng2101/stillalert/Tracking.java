@@ -7,16 +7,20 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
+import android.os.Handler;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.sql.Timestamp;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static android.os.VibrationEffect.DEFAULT_AMPLITUDE;
 
-public class Tracking extends AppCompatActivity implements SensorEventListener {
+public class Tracking implements SensorEventListener {
 
     private Sensor mSensor;
     private SensorManager mSensorManager;
@@ -31,6 +35,7 @@ public class Tracking extends AppCompatActivity implements SensorEventListener {
     float tempX, tempY, tempZ;
     long timestamp;
     private boolean stopped;
+    private long loopTimeStamp;
 
     private static final String TAG = "Tracking";
 
@@ -39,7 +44,7 @@ public class Tracking extends AppCompatActivity implements SensorEventListener {
         // Setup sensors
         nContext = context;
         mSensorManager = (SensorManager) nContext.getSystemService(Context.SENSOR_SERVICE);
-        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
         mSensorManager.registerListener(Tracking.this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
         vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -49,12 +54,12 @@ public class Tracking extends AppCompatActivity implements SensorEventListener {
         vibrationEnabled = Boolean.parseBoolean(preferences.getString("vibrate", "true"));
         idleTime = preferences.getInt("idleTime", 30);
         idleTime *= 1000;
-        sensitivity  = preferences.getFloat("sensitivity", 0.3f);
+        sensitivity = preferences.getFloat("sensitivity", 0.3f);
 
         // Load calibration settings
-        calibrateX = preferences.getFloat("calibrateX",0);
-        calibrateY = preferences.getFloat("calibrateY",0);
-        calibrateZ = preferences.getFloat("calibrateZ",0);
+        calibrateX = preferences.getFloat("calibrateX", 0);
+        calibrateY = preferences.getFloat("calibrateY", 0);
+        calibrateZ = preferences.getFloat("calibrateZ", 0);
 
         tempX = 0;
         tempY = 0;
@@ -65,47 +70,46 @@ public class Tracking extends AppCompatActivity implements SensorEventListener {
         stopped = false;
         timestamp = 0;
 
+        loopTimeStamp = 0;
+
     }
 
     @Override
     public void onSensorChanged(final SensorEvent sensorEvent) {
-        if (!flag){
+        if (!flag) {
             return;
         }
 
         if (Math.abs(tempX - sensorEvent.values[0]) - calibrateX < sensitivity && Math.abs(tempY - sensorEvent.values[1]) - calibrateY < sensitivity
-                && Math.abs(tempZ - sensorEvent.values[2]) - calibrateZ < sensitivity ){
+                && Math.abs(tempZ - sensorEvent.values[2]) - calibrateZ < sensitivity) {
             Log.d("Sensor", "Still " + tempX);
 
             // If first stopped indication store time and set stopped to true
-            if(!stopped){
+            if (!stopped) {
                 timestamp = System.currentTimeMillis();
                 stopped = true;
             }
 
             // If has been stopped for more than idle time play sound
-            if (System.currentTimeMillis() - timestamp > idleTime  && stopped){
-                Log.d(TAG, "onSensorChanged: RING RING");
-                if (soundEnabled){
-                    playSound();
-                }
+            if (System.currentTimeMillis() - timestamp > idleTime && stopped) {
 
-                if (vibrationEnabled) {
-                    vibrate();
-                }
-
+                    Log.d(TAG, "onSensorChanged: RING RING");
+                    if (soundEnabled) {
+                        playSound();
+                    }
+                    if (vibrationEnabled) {
+                        vibrate();
+                    }
                 stopped = false;
             }
 
-
-        }else{
+        } else{
             // Movement detected reset everything
             Log.d("Sensor", "Moving " + tempX);
             stopped = false;
             timestamp = 0;
-
+            //loopTimeStamp = 0;
         }
-
         // For calibration
         tempX = sensorEvent.values[0];
         tempY = sensorEvent.values[1];
