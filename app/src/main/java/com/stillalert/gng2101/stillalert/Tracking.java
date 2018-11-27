@@ -36,6 +36,9 @@ public class Tracking implements SensorEventListener {
     long timestamp;
     private boolean stopped;
     private long loopTimeStamp;
+    private long lengthOfIdle = 0;
+    private GoogleSheet sheet = new GoogleSheet();
+    private boolean calibration;
 
     private static final String TAG = "Tracking";
 
@@ -91,7 +94,7 @@ public class Tracking implements SensorEventListener {
             }
 
             // If has been stopped for more than idle time play sound
-            if (System.currentTimeMillis() - timestamp > idleTime && stopped) {
+            if (System.currentTimeMillis() - timestamp > idleTime && stopped && !calibration) {
 
                     Log.d(TAG, "onSensorChanged: RING RING");
                     if (soundEnabled) {
@@ -105,6 +108,10 @@ public class Tracking implements SensorEventListener {
 
         } else{
             // Movement detected reset everything
+            lengthOfIdle = System.currentTimeMillis() - timestamp;
+            addItemToSheet((Long.toString(lengthOfIdle)),nContext);
+
+
             Log.d("Sensor", "Moving " + tempX);
             stopped = false;
             timestamp = 0;
@@ -126,6 +133,11 @@ public class Tracking implements SensorEventListener {
         mp.start();
     }
 
+    public void addItemToSheet(String time,Context context){
+        Log.d(TAG, "addItemToSheet: ************************** Reached Add Item Method *************************");
+        sheet.onClick(time,context);
+    }
+
     private void vibrate() {
         vibrator.vibrate(1000);
     }
@@ -138,6 +150,19 @@ public class Tracking implements SensorEventListener {
         flag = false;
         stopped = false;
         timestamp = 0;
+    }
+
+    public void startCalibraton() {
+        flag = true;
+        calibration = true;
+
+    }
+
+    public void stopCalibration() {
+        flag = false;
+        stopped = false;
+        timestamp = 0;
+        calibration = false;
     }
 
     public float getCalibrateX() {

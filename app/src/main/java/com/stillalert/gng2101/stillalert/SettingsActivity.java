@@ -76,7 +76,7 @@ public class SettingsActivity extends AppCompatActivity {
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     public void run() {
-                        tracking.startTracking();
+                        tracking.startCalibraton();
                     }
                 }, 3000);
 
@@ -84,8 +84,14 @@ public class SettingsActivity extends AppCompatActivity {
                 handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     public void run() {
+                        tracking.stopCalibration();
+                    }
+                }, 500);
+
+                handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
                         Toast.makeText(context, "Calibrating...", Toast.LENGTH_SHORT).show();
-                        tracking.stopTracking();
                     }
                 }, 2000);
 
